@@ -17,7 +17,7 @@ class Book extends React.Component {
           <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url("${imageLinks.smallThumbnail}")` }}></div>
           <div className="book-shelf-changer">
             <select onChange={(event) => this.moveBook(event.target.value)} value={shelf} >
-              <option value="none" disabled>Move to...</option>
+              <option value="" disabled>Move to...</option>
               <option value="currentlyReading">Currently Reading</option>
               <option value="wantToRead">Want to Read</option>
               <option value="read">Read</option>
@@ -26,7 +26,7 @@ class Book extends React.Component {
           </div>
         </div>
         <div className="book-title">{title}</div>
-        <div className="book-authors">{authors.join('; ')}</div>
+        <div className="book-authors">{authors && authors.join('; ')}</div>
       </div>
     )
   }
@@ -37,7 +37,8 @@ Book.propTypes = {
   book: PropTypes.shape({
     id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
-    authors: PropTypes.array.isRequired,
+    authors: PropTypes.array,
+    shelf: PropTypes.string.isRequired,
     imageLinks: PropTypes.shape({
       smallThumbnail: PropTypes.string,
       thumbnail: PropTypes.string

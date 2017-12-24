@@ -15,15 +15,30 @@ class Search extends React.Component {
 
   search = (term) => {
     if (term.length > 0) {
-      BooksAPI.search(term).then(books => this.setState({ term, books }))
+      BooksAPI.search(term).then(books => {
+        if (books.error) return this.setState({ term, books: [] })
+        this.setState({ term, books })
+      })
     } else {
       this.setState({ term, books: [] })
     }
   }
+  
+  updateBooksShelves = (books = [], shelves) => {
+    books.map(book => {
+      book.shelf = shelves
+        .map(shelf => shelf.books.find(findBook => findBook.id === book.id))
+        .reduce((acc, curr) => curr ? curr.shelf : acc, 'none')
+      return book
+    })
+  }
 
   render() {
     const { term, books } = this.state
-    
+    const { shelves } = this.props
+
+    this.updateBooksShelves(books, shelves)
+
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -63,6 +78,7 @@ class Search extends React.Component {
 }
 
 Search.propTypes = {
+  shelves: PropTypes.array.isRequired,
   onMoveBook: PropTypes.func.isRequired,
 }
 
