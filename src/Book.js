@@ -3,15 +3,20 @@ import React from 'react';
 
 class Book extends React.Component {
 
+  moveBook(shelf) {
+    const { book, onMoveBook } = this.props
+    onMoveBook(book, shelf)
+  }
+
   render() {
-    const { title, authors, imageLinks } = this.props
+    const { title, authors, imageLinks, shelf } = this.props.book
 
     return (
       <div className="book">
         <div className="book-top">
           <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url("${imageLinks.smallThumbnail}")` }}></div>
           <div className="book-shelf-changer">
-            <select>
+            <select onChange={(event) => this.moveBook(event.target.value)} value={shelf} >
               <option value="none" disabled>Move to...</option>
               <option value="currentlyReading">Currently Reading</option>
               <option value="wantToRead">Want to Read</option>
@@ -29,12 +34,16 @@ class Book extends React.Component {
 }
 
 Book.propTypes = {
-  title: PropTypes.string.isRequired,
-  authors: PropTypes.array.isRequired,
-  imageLinks: PropTypes.shape({
-    smallThumbnail: PropTypes.string,
-    thumbnail: PropTypes.string
-  })
+  book: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    authors: PropTypes.array.isRequired,
+    imageLinks: PropTypes.shape({
+      smallThumbnail: PropTypes.string,
+      thumbnail: PropTypes.string
+    })
+  }),
+  onMoveBook: PropTypes.func.isRequired,
 }
 
 export default Book

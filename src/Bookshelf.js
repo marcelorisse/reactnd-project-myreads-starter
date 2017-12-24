@@ -13,7 +13,7 @@ class Bookshelf extends React.Component {
           <ol className="books-grid">
             {books.map(book => (
               <li key={book.id} >
-                <Book title={book.title} authors={book.authors} imageLinks={book.imageLinks} />
+                <Book book={book} onMoveBook={this.props.onMoveBook} />
               </li>
             ))}
           </ol>
@@ -26,6 +26,7 @@ class Bookshelf extends React.Component {
 Bookshelf.propTypes = {
   title: PropTypes.string.isRequired,
   books: PropTypes.array.isRequired,
+  onMoveBook: PropTypes.func.isRequired,
 }
 
 export default Bookshelf
